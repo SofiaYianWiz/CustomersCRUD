@@ -1,0 +1,36 @@
+﻿@page "/customers"
+
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using CustomersCRUD.Models
+@inject IDbContextFactory<CustomersCRUD.Data.CustomersCRUDContext> DbFactory
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="customers/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="DbFactory.CreateDbContext().Customer">
+    <PropertyColumn Property="customer => customer.Name" />
+    <PropertyColumn Property="customer => customer.Surname" />
+    <PropertyColumn Property="customer => customer.Email" />
+    <PropertyColumn Property="customer => customer.Phone" />
+    <PropertyColumn Property="customer => customer.DateOfBirth" />
+    <PropertyColumn Property="customer => customer.Address" />
+    <PropertyColumn Property="customer => customer.Credit" />
+
+    <TemplateColumn Context="customer">
+        <a href="@($"customers/edit?id={customer.Id}")">Edit</a> |
+        <a href="@($"customers/details?id={customer.Id}")">Details</a> |
+        <a href="@($"customers/delete?id={customer.Id}")">Delete</a>
+    </TemplateColumn>
+
+    @if (DbFactory.CreateDbContext().Customer.Any(e => e.Name == "Sofia"))
+    {
+        <h1>VRIKAME SOFAKI</h1>
+
+    }
+</QuickGrid>
